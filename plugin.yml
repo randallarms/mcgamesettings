@@ -1,6 +1,6 @@
 name: MCGameSettings
 main: com.kraken.mcgamesettings.Main
-version: 0.2 (alpha)
+version: 0.3 (alpha)
 commands:
      mcgs:
         description: Info on the LightMeUp plugin & version number.

@@ -19,4 +19,7 @@ opRequired: false
 # WHITELIST | Whether players must be allowed via the allowSetting command to use light.
 whitelist: false
 #
+# SILENTDEATH | Whether player death should send a message to the global chat.
+silentDeath: false
+#
 # FOR MORE INFO | https://www.spigotmc.org/resources/mcgamesettings.42964/
