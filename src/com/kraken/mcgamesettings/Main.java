@@ -1,5 +1,5 @@
 // ========================================================================
-// |MCGAMESETTINGS v0.2
+// |MCGAMESETTINGS v0.3
 // | by Kraken | https://www.spigotmc.org/resources/mcgamesettings.42964/
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |
@@ -26,7 +26,7 @@ import org.bukkit.ChatColor;
 
 public class Main extends JavaPlugin {
   	
-	public String VERSION = "0.2";
+	public String VERSION = "0.3";
 	
     private File optionsFile = new File("plugins/MCGameSettings", "options.yml");
     private FileConfiguration options = YamlConfiguration.loadConfiguration(optionsFile);
@@ -37,6 +37,7 @@ public class Main extends JavaPlugin {
 	boolean enabled = true;
 	boolean opRequired = false;
 	boolean whitelist = false;
+	boolean silentDeath = false;
 	
 	ArrayList<String> isAllowed = new ArrayList<String>();
 	
@@ -54,6 +55,7 @@ public class Main extends JavaPlugin {
 			options.set("enabled", true);
 			options.set("opRequired", false);
 			options.set("whitelist", false);
+			options.set("silentDeath", false);
 			
 	        saveOptions();
 	        
@@ -61,6 +63,7 @@ public class Main extends JavaPlugin {
 
         enabled = options.getBoolean("enabled");
         opRequired = options.getBoolean("opRequired");
+        silentDeath = options.getBoolean("silentDeath");
         
         for (String id : getConfig().getKeys(false) ) {
         	
@@ -125,9 +128,9 @@ public class Main extends JavaPlugin {
 	    			
 	    			if (player.isOp()) {
       	        	  
-        	            if (args.length == 1) {
+        	            if ( args.length > 0 ) {
         	            	
-        	            	switch (args[0]) {
+        	            	switch ( args[0].toLowerCase() ) {
         	            	
         	            		case "on":
         	            		case "enable":
@@ -135,6 +138,8 @@ public class Main extends JavaPlugin {
         	            			options.set("enabled", true);
         	            			enabled = true;
         	            			saveOptions();
+        	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | MCGameSettings is now enabled.");
+        	            			return true;
         	            			
         	            		case "off":
         	            		case "disable":
@@ -142,15 +147,53 @@ public class Main extends JavaPlugin {
         	            			options.set("enabled", false);
         	            			enabled = false;
         	            			saveOptions();
+        	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | MCGameSettings is now disabled.");
+        	            			return true;
         	            			
+        	            		case "silentDeath":
+        	            		case "silentdeath":
+        	            			
+        	            			if ( args.length > 1 ) {
+        	            			
+	        	            			switch (args[1]) {
+	                	            	
+		    	    	            		case "on":
+		    	    	            		case "enable":
+		    	    	            		case "true":
+		    	    	            			options.set("silentDeath", true);
+		    	    	            			silentDeath = true;
+		    	    	            			saveOptions();
+		    	    	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | Death messages are now silenced.");
+		    	    	            			return true;
+		    	    	            			
+		    	    	            		case "off":
+		    	    	            		case "disable":
+		    	    	            		case "false":
+		    	    	            			options.set("silentDeath", false);
+		    	    	            			silentDeath = false;
+		    	    	            			saveOptions();
+		    	    	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | Death messages are no longer silenced.");
+		    	    	            			return true;
+		    	    	            			
+		    	    	            		default:
+		    	    	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | Try \"/mcgs silentDeath <on/off>\".");
+		    	    	            			return true;
+	        	            	
+	        	            			}
+        	            			
+        	            			} else {
+        	            				player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | Try \"/mcgs silentDeath <on/off>\".");
+            	            			return true;
+        	            			}
+	        	            			
         	            		default:
-        	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + "Try \"/lmu <on/off>\".");
+        	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | Try \"/mcgs <on/off>\".");
         	            			return true;
         	            	
         	            	}
         	            	
         	            } else {
-        	            	player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + "CURRENT: MCGameSettings v" + VERSION + " (release)");
+        	            	player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | CURRENT: MCGameSettings v" + VERSION + " (release)");
         	                return true;
         	            }
         	            
@@ -178,16 +221,16 @@ public class Main extends JavaPlugin {
         	    		
         	    	} else if ( !whitelist || isAllowed.contains(UUIDString) ) {
 			        	
-			              timeProc.cycleTime(player, command);
-			              player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "It is now " + command + ".");
+			            timeProc.cycleTime(player, command);
+			            player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "It is now " + command + ".");
+			            return true;
 			              
 			        } else {
 			        	
 			        	player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have permission to use this command.");
+			        	return true;
 			        	
 			        }
-        	    	
-			        return true;
 			        
 			  //Commands: rain/raining, snow/snowing, thunder/lightning/storm/thunderstorm, sunny
 			        
@@ -213,16 +256,16 @@ public class Main extends JavaPlugin {
         	    		
         	    	} else if ( !whitelist || isAllowed.contains(UUIDString) ) {
 			        	
-			              weatherProc.cycleWeather(player, command);
-			              player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "The weather has been set to: " + command + ".");
+        	    		weatherProc.cycleWeather(player, command);
+			        	player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "The weather has been set to: " + command + ".");
+			        	return true;
 			              
 			        } else {
 			        	
 			        	player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have permission to use this command.");
+			        	return true;
 			        	
 			        }
-        	    	
-        	    	return true;
 			        
 			  //Command: allowSetting
         	    case "allowSetting":
