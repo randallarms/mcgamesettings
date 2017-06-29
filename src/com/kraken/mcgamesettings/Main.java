@@ -1,6 +1,6 @@
 // ========================================================================
-// |MCGAMESETTINGS v0.1
-// | by Kraken | previously unreleased
+// |MCGAMESETTINGS v0.2
+// | by Kraken | https://www.spigotmc.org/resources/mcgamesettings.42964/
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |
 // | Always free & open-source! If this plugin is being sold or re-branded,
@@ -26,12 +26,13 @@ import org.bukkit.ChatColor;
 
 public class Main extends JavaPlugin {
   	
-	public String VERSION = "0.1";
+	public String VERSION = "0.2";
 	
     private File optionsFile = new File("plugins/MCGameSettings", "options.yml");
     private FileConfiguration options = YamlConfiguration.loadConfiguration(optionsFile);
 	
 	TimeProcessing timeProc = new TimeProcessing(this);
+	WeatherProcessing weatherProc = new WeatherProcessing(this);
     
 	boolean enabled = true;
 	boolean opRequired = false;
@@ -155,7 +156,7 @@ public class Main extends JavaPlugin {
         	            
 	    			}
         	
-			  //Command: day
+			  //Commands: day, night, sunrise, sunset, dawn, dusk, morning, midnight
         	    case "day":
         	    case "night":
         	    case "sunrise": 
@@ -187,6 +188,41 @@ public class Main extends JavaPlugin {
 			        }
         	    	
 			        return true;
+			        
+			  //Commands: rain/raining, snow/snowing, thunder/lightning/storm/thunderstorm, sunny
+			        
+        	    case "rain":
+        	    case "raining":
+        	    case "snow":
+        	    case "snowing":
+    			case "thunder":
+    			case "lightning":
+    			case "storm":
+    			case "thunderstorm":
+        	    case "sunny":
+        	    	
+        	    	if ( opRequired && !player.isOp() ) {
+                		
+                		player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have MCGS privileges.");
+                        return true;
+                        
+                	} else if ( !enabled ) {
+        	    		
+        	    		player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "MCGS is currently disabled.");
+        	    		return true;
+        	    		
+        	    	} else if ( !whitelist || isAllowed.contains(UUIDString) ) {
+			        	
+			              weatherProc.cycleWeather(player, command);
+			              player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "The weather has been set to: " + command + ".");
+			              
+			        } else {
+			        	
+			        	player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have permission to use this command.");
+			        	
+			        }
+        	    	
+        	    	return true;
 			        
 			  //Command: allowSetting
         	    case "allowSetting":
