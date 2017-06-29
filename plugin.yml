@@ -1,6 +1,6 @@
 name: MCGameSettings
 main: com.kraken.mcgamesettings.Main
-version: 0.1 (alpha)
+version: 0.2 (alpha)
 commands:
      mcgs:
         description: Info on the LightMeUp plugin & version number.
@@ -36,4 +36,15 @@ commands:
         usage: /<command>    
      midnight:
         description: MCGS / Set the time to midnight (18000 ticks).
-        usage: /<command>      
+        usage: /<command>
+     rain:
+        description: MCGS / Set the weather to rain or snow!
+        usage: /<command>
+        aliases: [raining, snow, snowing]
+     storm:
+        description: MCGS / Set the weather to a thunderstorm!
+        usage: /<command>
+        aliases: [lightning, thunder, thunderstorm]
+     sunny:
+        description: MCGS / Set the weather to clear skies!
+        usage: /<command>
