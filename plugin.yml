@@ -1,14 +1,10 @@
 name: MCGameSettings
 main: com.kraken.mcgamesettings.Main
-version: 0.3 (alpha)
+version: 0.4 (alpha)
 commands:
      mcgs:
         description: Info on the LightMeUp plugin & version number.
-        usage: /<command> <on/off>
-     opReqSettings:
-        description: Enable/disable requirement of OP perms to use MCGS commands.
-        usage: /<command> <on/off>
-        aliases: [opRequiredSettings]
+        usage: /<command> <on/off/silentDeath/opReq>
      allowSetting:
         description: Toggle player permission to use the MCGS commands.
         usage: /<command> <player>
