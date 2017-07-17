@@ -1,6 +1,6 @@
 package com.kraken.mcgamesettings;
 
-import org.bukkit.entity.Player;
+import org.bukkit.World;
 
 public class WeatherProcessing {
 	
@@ -14,22 +14,22 @@ public class WeatherProcessing {
 	}
 	
   //Weather commands
-	public void cycleWeather(Player player, String command) {
+	public void cycleWeather(World world, String command) {
 		
 		switch ( command ) {
 		
 		  //"rain", "raining", "snow", "snowing" command processing
 			case "rain": 
-				player.getWorld().setWeatherDuration(18000);
+				world.setWeatherDuration(18000);
 				break;
 		  //"rain", "raining", "snow", "snowing" command processing
 			case "storm":
-				player.getWorld().setStorm(true);
+				world.setStorm(true);
 				break;
 		  //"sunny" command processing
 			default: 
-				player.getWorld().setWeatherDuration(0);
-				player.getWorld().setStorm(false);
+				world.setWeatherDuration(0);
+				world.setStorm(false);
 				break;
 				
 		}

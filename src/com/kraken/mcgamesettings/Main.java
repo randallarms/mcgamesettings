@@ -1,5 +1,5 @@
 // ========================================================================
-// |MCGAMESETTINGS v0.3
+// |MCGAMESETTINGS v0.4
 // | by Kraken | https://www.spigotmc.org/resources/mcgamesettings.42964/
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |
@@ -22,14 +22,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.bukkit.ChatColor;
+import org.bukkit.Bukkit;
 
 public class Main extends JavaPlugin {
   	
-	public String VERSION = "0.3";
+	public String VERSION = "0.4";
 	
-    private File optionsFile = new File("plugins/MCGameSettings", "options.yml");
-    private FileConfiguration options = YamlConfiguration.loadConfiguration(optionsFile);
+    File optionsFile = new File("plugins/MCGameSettings", "options.yml");
+    FileConfiguration options = YamlConfiguration.loadConfiguration(optionsFile);
 	
 	TimeProcessing timeProc = new TimeProcessing(this);
 	WeatherProcessing weatherProc = new WeatherProcessing(this);
@@ -114,274 +114,17 @@ public class Main extends JavaPlugin {
     @SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         
-      //Player commands
-        if ( sender instanceof Player ) {
-        	
-        	String command = cmd.getName();
-    		Player player = (Player) sender;
-    		String UUIDString = player.getUniqueId().toString();
-     	
-        	switch ( command.toLowerCase() ) {
-        	
-	        //Command: mcgs        
-	    		case "mcgs":
-	    			
-	    			if (player.isOp()) {
-      	        	  
-        	            if ( args.length > 0 ) {
-        	            	
-        	            	switch ( args[0].toLowerCase() ) {
-        	            	
-        	            		case "on":
-        	            		case "enable":
-        	            		case "true":
-        	            			options.set("enabled", true);
-        	            			enabled = true;
-        	            			saveOptions();
-        	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | MCGameSettings is now enabled.");
-        	            			return true;
-        	            			
-        	            		case "off":
-        	            		case "disable":
-        	            		case "false":
-        	            			options.set("enabled", false);
-        	            			enabled = false;
-        	            			saveOptions();
-        	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | MCGameSettings is now disabled.");
-        	            			return true;
-        	            			
-        	            		case "silentDeath":
-        	            		case "silentdeath":
-        	            			
-        	            			if ( args.length > 1 ) {
-        	            			
-	        	            			switch (args[1]) {
-	                	            	
-		    	    	            		case "on":
-		    	    	            		case "enable":
-		    	    	            		case "true":
-		    	    	            			options.set("silentDeath", true);
-		    	    	            			silentDeath = true;
-		    	    	            			saveOptions();
-		    	    	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | Death messages are now silenced.");
-		    	    	            			return true;
-		    	    	            			
-		    	    	            		case "off":
-		    	    	            		case "disable":
-		    	    	            		case "false":
-		    	    	            			options.set("silentDeath", false);
-		    	    	            			silentDeath = false;
-		    	    	            			saveOptions();
-		    	    	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | Death messages are no longer silenced.");
-		    	    	            			return true;
-		    	    	            			
-		    	    	            		default:
-		    	    	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | Try \"/mcgs silentDeath <on/off>\".");
-		    	    	            			return true;
-	        	            	
-	        	            			}
-        	            			
-        	            			} else {
-        	            				player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | Try \"/mcgs silentDeath <on/off>\".");
-            	            			return true;
-        	            			}
-	        	            			
-        	            		default:
-        	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | Try \"/mcgs <on/off>\".");
-        	            			return true;
-        	            	
-        	            	}
-        	            	
-        	            } else {
-        	            	player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | CURRENT: MCGameSettings v" + VERSION + " (release)");
-        	                return true;
-        	            }
-        	            
-	    			}
-        	
-			  //Commands: day, night, sunrise, sunset, dawn, dusk, morning, midnight
-        	    case "day":
-        	    case "night":
-        	    case "sunrise": 
-        	    case "sunset": 
-        	    case "dawn": 
-        	    case "dusk": 
-        	    case "morning": 
-        	    case "midnight": 
-        	    	
-                	if ( opRequired && !player.isOp() ) {
-                		
-                		player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have MCGS privileges.");
-                        return true;
-                        
-                	} else if ( !enabled ) {
-        	    		
-        	    		player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "MCGS is currently disabled.");
-        	    		return true;
-        	    		
-        	    	} else if ( !whitelist || isAllowed.contains(UUIDString) ) {
-			        	
-			            timeProc.cycleTime(player, command);
-			            player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "It is now " + command + ".");
-			            return true;
-			              
-			        } else {
-			        	
-			        	player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have permission to use this command.");
-			        	return true;
-			        	
-			        }
-			        
-			  //Commands: rain/raining, snow/snowing, thunder/lightning/storm/thunderstorm, sunny
-			        
-        	    case "rain":
-        	    case "raining":
-        	    case "snow":
-        	    case "snowing":
-    			case "thunder":
-    			case "lightning":
-    			case "storm":
-    			case "thunderstorm":
-        	    case "sunny":
-        	    	
-        	    	if ( opRequired && !player.isOp() ) {
-                		
-                		player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have MCGS privileges.");
-                        return true;
-                        
-                	} else if ( !enabled ) {
-        	    		
-        	    		player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "MCGS is currently disabled.");
-        	    		return true;
-        	    		
-        	    	} else if ( !whitelist || isAllowed.contains(UUIDString) ) {
-			        	
-        	    		weatherProc.cycleWeather(player, command);
-			        	player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "The weather has been set to: " + command + ".");
-			        	return true;
-			              
-			        } else {
-			        	
-			        	player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have permission to use this command.");
-			        	return true;
-			        	
-			        }
-			        
-			  //Command: allowSetting
-        	    case "allowSetting":
-        	    case "allowsetting":
-        	    case "allowMCGS":
-        	    case "allowmcgs":
-			        
-        	          Player targetPlayer;
-        	          String targetUUID;
-        	          
-        	          if (player.isOp()) {
-        	        	  
-        	            if (args.length == 1) {
-        	            	
-        	            	if ( args[0].equals("*") ) {
-        	            		
-        	            		if ( options.getBoolean("whitelist") ) {
-        	            			
-        	            			whitelist = false;
-        	            			options.set("whitelist", false);
-        	            			saveOptions();
-            	            		player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "Whitelisting is now disabled.");
-            	            		return true;
-            	            		
-        	            		} else {
-        	            			
-        	            			whitelist = true;
-        	            			options.set("whitelist", true);
-        	            			saveOptions();
-            	            		player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "Whitelisting is now enabled.");
-            	            		return true;
-            	            		
-        	            		}
-        	            		
-        	            		
-        	            		
-        	            	}
-        	            	
-        	            	try {
-        	            		targetPlayer = getServer().getPlayerExact(args[0]);
-        	            		targetUUID = targetPlayer.getUniqueId().toString();
-        	            	} catch (NullPointerException npe1) {
-        	            		player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "Player not found online.");
-        	            		return true;
-        	            	}
-        	              
-        	            	if ( !isAllowed.contains(targetUUID) ) {
-        	            	  
-        	            		getConfig().set(targetUUID + ".allowed", true);
-        	            		isAllowed.add(targetUUID);
-        	            		player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "Added " + args[0] + " to the MCGS whitelist.");
-        	                
-        	            	} else {
-        	            	  
-        	            		getConfig().set(targetUUID + ".allowed", false);
-        	            		isAllowed.remove(targetUUID);
-        	            		player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "Removed " + args[0] + " from the MCGS whitelist.");
-        	                
-        	            	}
-        	              
-        	            	saveConfig();
-        	            	return true;
-        	              
-        	            }
-        	            
-        	            player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "Try entering \"/allowSetting <player>\".");
-        	            return true;
-        	            
-        	          }
-        	          
-        	          player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have permission to use this command.");
-        	          return true;
-			        
-			  //Command: opRequiredSettings
-        	    case "opRequiredSettings":
-        	    case "oprequiredSettings":
-        	    case "opReqSettings":
-        	    case "opreqSettings":
-        			  
-        	    	if ( args.length == 1 ) {
-        	    		switch ( args[0].toLowerCase() ) {
-        	    			case "on":
-        	    			case "enable":
-        	    			case "enabled":
-        	    			case "true":
-        	    				options.set("opRequired", true);
-        	    				opRequired = true;
-        	    				saveOptions();
-        	    				return true;
-        	    			case "off":
-        	    			case "disable":
-        	    			case "disabled":
-        	    			case "false":
-        	    				options.set("opRequired", false);
-        	    				opRequired = false;
-        	    				saveOptions();
-        	    				return true;
-        	    			default:
-        	    				player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "Try entering \"/opReqSettings <on/off>\".");
-        	        	    	return true;
-        	    		}
-        	    	}
-        	    	
-        	    	player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "Try entering \"/opReqSettings <on/off>\".");
-        	    	return true;
-			        
-			    default:
-			    	  
-			        player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "Command not recognized.");
-			        return true;
-			    
-	        }
-        
-        }
-        
-        return true;
+    	Player player = Bukkit.getServer().getPlayerExact("Octopus__");
+    	String command = cmd.getName();
+    	ConsoleCommands commands = new ConsoleCommands(this);
+    	
+    	if (sender instanceof Player) {
+    		player = (Player) sender;
+    		return commands.execute(true, player, command, args);
+    	} else {
+    		return commands.execute(false, player, command, args);
+    	}
+    	
         
     }
     
