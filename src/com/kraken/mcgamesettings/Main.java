@@ -1,5 +1,5 @@
 // ========================================================================
-// |MCGAMESETTINGS v0.4
+// |MCGAMESETTINGS v0.5
 // | by Kraken | https://www.spigotmc.org/resources/mcgamesettings.42964/
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |
@@ -26,13 +26,14 @@ import org.bukkit.Bukkit;
 
 public class Main extends JavaPlugin {
   	
-	public String VERSION = "0.4";
+	public String VERSION = "0.5";
 	
     File optionsFile = new File("plugins/MCGameSettings", "options.yml");
     FileConfiguration options = YamlConfiguration.loadConfiguration(optionsFile);
 	
 	TimeProcessing timeProc = new TimeProcessing(this);
 	WeatherProcessing weatherProc = new WeatherProcessing(this);
+	ModeProcessing modeProc = new ModeProcessing(this);
     
 	boolean enabled = true;
 	boolean opRequired = false;
@@ -117,14 +118,13 @@ public class Main extends JavaPlugin {
     	Player player = Bukkit.getServer().getPlayerExact("Octopus__");
     	String command = cmd.getName();
     	ConsoleCommands commands = new ConsoleCommands(this);
+    	boolean isPlayer = sender instanceof Player;
     	
-    	if (sender instanceof Player) {
+    	if (isPlayer) {
     		player = (Player) sender;
-    		return commands.execute(true, player, command, args);
-    	} else {
-    		return commands.execute(false, player, command, args);
     	}
     	
+    	return commands.execute(isPlayer, player, command, args);
         
     }
     
