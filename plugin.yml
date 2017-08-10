@@ -1,6 +1,6 @@
 name: MCGameSettings
 main: com.kraken.mcgamesettings.Main
-version: 0.4 (alpha)
+version: 0.5 (alpha)
 commands:
      mcgs:
         description: Info on the LightMeUp plugin & version number.
@@ -43,4 +43,17 @@ commands:
         aliases: [lightning, thunder, thunderstorm]
      sunny:
         description: MCGS / Set the weather to clear skies!
+        usage: /<command>
+     creative:
+        description: MCGS / Set your gamemode to Creative Mode.
+        usage: /<command>
+        aliases: [god, godmode]
+     survival:
+        description: MCGS / Set your gamemode to Survival Mode.
+        usage: /<command>
+     adventure:
+        description: MCGS / Set your gamemode to Adventure Mode.
+        usage: /<command>
+     spectator:
+        description: MCGS / Set your gamemode to Spectator Mode.
         usage: /<command>

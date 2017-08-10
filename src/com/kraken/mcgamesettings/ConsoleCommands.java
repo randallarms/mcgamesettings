@@ -22,6 +22,7 @@ public class ConsoleCommands {
 	  
 	  TimeProcessing timeProc;
 	  WeatherProcessing weatherProc;
+	  ModeProcessing modeProc;
 
 	
   //Constructor
@@ -41,6 +42,7 @@ public class ConsoleCommands {
 	  
 	    this.timeProc = plugin.timeProc;
 	    this.weatherProc = plugin.weatherProc;
+	    this.modeProc = plugin.modeProc;
 	
 	}
 	
@@ -207,6 +209,57 @@ public class ConsoleCommands {
 		            	}
 	            	
 	            }
+	            
+	  	  //Commands: creative, survival, adventure, spectator, god, godmode
+    	    case "creative":
+    	    case "survival":
+    	    case "adventure":
+    	    case "spectator":
+    	    case "god":
+    	    case "godmode":
+    	    	
+    	    	if ( opRequired && !player.isOp() ) {
+            		
+            		if (isPlayer) {
+            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have MCGS privileges.");
+        			} else {
+        				System.out.println("[MCGS] You do not have MCGS privileges.");
+        			}
+            		
+                    return true;
+                    
+            	} else if ( !enabled ) {
+            		
+            		if (isPlayer) {
+            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "MCGS is currently disabled.");
+        			} else {
+        				System.out.println("[MCGS] MCGS is currently disabled.");
+        			}
+            		
+    	    		return true;
+    	    		
+    	    	} else if ( !whitelist || isAllowed.contains(player.getUniqueId().toString()) ) {
+		        	
+		        	if (isPlayer) {
+		        		modeProc.cycleMode(player, command);
+		        		player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "Your gamemode has been set to: " + command + ".");
+        			} else {
+        				System.out.println("[MCGS] This is a player-only command.");
+        			}
+		        	
+		        	return true;
+		              
+		        } else {
+
+		        	if (isPlayer) {
+		        		player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have permission to use this command.");
+        			} else {
+        				System.out.println("[MCGS] You do not have permission to use this command.");
+        			}
+		        	
+		        	return true;
+		        	
+		        }
     	
 		  //Commands: day, night, sunrise, sunset, dawn, dusk, morning, midnight
     	    case "day":
