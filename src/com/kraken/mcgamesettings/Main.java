@@ -1,5 +1,5 @@
 // ========================================================================
-// |MCGAMESETTINGS v0.5
+// |MCGAMESETTINGS v0.5.1
 // | by Kraken | https://www.spigotmc.org/resources/mcgamesettings.42964/
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |
@@ -26,7 +26,7 @@ import org.bukkit.Bukkit;
 
 public class Main extends JavaPlugin {
   	
-	public String VERSION = "0.5";
+	public String VERSION = "0.5.1";
 	
     File optionsFile = new File("plugins/MCGameSettings", "options.yml");
     FileConfiguration options = YamlConfiguration.loadConfiguration(optionsFile);
