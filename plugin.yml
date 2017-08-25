@@ -1,6 +1,6 @@
 name: MCGameSettings
 main: com.kraken.mcgamesettings.Main
-version: 0.5.1 (alpha)
+version: 0.5.2 (alpha)
 commands:
      mcgs:
         description: Info on the MCGameSettings plugin & version number.

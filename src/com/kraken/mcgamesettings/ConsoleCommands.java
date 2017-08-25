@@ -17,6 +17,8 @@ public class ConsoleCommands {
 	  boolean whitelist;
 	  boolean opRequired;
 	  boolean silentDeath;
+	  boolean buildPermReq;
+	  boolean destroyPermReq;
 	  
 	  ArrayList<String> isAllowed;
 	  
@@ -37,12 +39,16 @@ public class ConsoleCommands {
 	    this.whitelist = plugin.whitelist;
 	    this.opRequired = plugin.opRequired;
 	    this.silentDeath = plugin.silentDeath;
+	    this.buildPermReq = plugin.buildPermReq;
+	    this.destroyPermReq = plugin.destroyPermReq;
 	  
 	    this.isAllowed = plugin.isAllowed;
 	  
 	    this.timeProc = plugin.timeProc;
 	    this.weatherProc = plugin.weatherProc;
 	    this.modeProc = plugin.modeProc;
+	    
+	    
 	
 	}
 	

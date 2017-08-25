@@ -1,5 +1,5 @@
 // ========================================================================
-// |MCGAMESETTINGS v0.5.1
+// |MCGAMESETTINGS v0.5.2
 // | by Kraken | https://www.spigotmc.org/resources/mcgamesettings.42964/
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |
@@ -26,7 +26,7 @@ import org.bukkit.Bukkit;
 
 public class Main extends JavaPlugin {
   	
-	public String VERSION = "0.5.1";
+	public String VERSION = "0.5.2";
 	
     File optionsFile = new File("plugins/MCGameSettings", "options.yml");
     FileConfiguration options = YamlConfiguration.loadConfiguration(optionsFile);
@@ -39,6 +39,8 @@ public class Main extends JavaPlugin {
 	boolean opRequired = false;
 	boolean whitelist = false;
 	boolean silentDeath = false;
+	boolean buildPermReq = false;
+	boolean destroyPermReq = false;
 	
 	ArrayList<String> isAllowed = new ArrayList<String>();
 	
@@ -57,6 +59,8 @@ public class Main extends JavaPlugin {
 			options.set("opRequired", false);
 			options.set("whitelist", false);
 			options.set("silentDeath", false);
+			options.set("buildPermReq", false);
+			options.set("destroyPermReq", false);
 			
 	        saveOptions();
 	        
@@ -65,6 +69,8 @@ public class Main extends JavaPlugin {
         enabled = options.getBoolean("enabled");
         opRequired = options.getBoolean("opRequired");
         silentDeath = options.getBoolean("silentDeath");
+        buildPermReq = options.getBoolean("buildPermReq");
+        destroyPermReq = options.getBoolean("destroyPermReq");
         
         for (String id : getConfig().getKeys(false) ) {
         	
@@ -111,7 +117,7 @@ public class Main extends JavaPlugin {
         
     }
     
-  //MCGS commands
+    //MCGS command handling
     @SuppressWarnings("deprecation")
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         

@@ -13,13 +13,19 @@ loaded: true
 # ENABLED | Whether players can use the MCGS commands.
 enabled: true
 # 
-# OPREQUIRED | Whether players must have OP perms to use the MCGS commands.
+# OP REQUIRED | Whether players must have OP perms to use the MCGS commands.
 opRequired: false
 #
 # WHITELIST | Whether players must be allowed via the allowSetting command to use light.
 whitelist: false
 #
-# SILENTDEATH | Whether player death should send a message to the global chat.
+# SILENT DEATH | Whether player death should send a message to the global chat.
 silentDeath: false
+#
+# BUILD REQ | Whether players must have the "settings.build" permission to build.
+buildPermReq: false
+#
+# DESTROY REQ | Whether players must have the "settings.destroy" permission to destroy.
+destroyPermReq: false
 #
 # FOR MORE INFO | https://www.spigotmc.org/resources/mcgamesettings.42964/
