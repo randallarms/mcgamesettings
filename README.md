@@ -59,3 +59,7 @@ commands:
      spectator:
         description: MCGS / Set your gamemode to Spectator Mode.
         usage: /<command>
+
+permissions:
+
+     Coming soon!
