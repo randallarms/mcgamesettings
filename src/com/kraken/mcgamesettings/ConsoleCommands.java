@@ -61,6 +61,14 @@ public class ConsoleCommands {
     	
           //Command: mcgs < on / off / silentDeath <on/off> / opRequired <on/off> >        
     		case "mcgs":
+    			
+    			//Currently requires "mcgs.op" perm to use commands
+    			if (isPlayer) {
+    				if (!player.hasPermission("op")) {
+    					player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have permission to use this command.");
+    					return true;
+    				}
+    			}
   	        	  
 	            switch ( args.length ) {
 	            
