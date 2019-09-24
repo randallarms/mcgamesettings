@@ -62,4 +62,13 @@ commands:
 
 permissions:
 
-     Coming soon!
+     mcgs.*:
+        description: Permission for all MCGameSettings commands.
+        children:
+           mcgs.admin: true
+     mcgs.admin:
+        description: Permission to use admin-level MCGS commands (all commands).
+     mcgs.op:
+        description: Permission to use op-level MCGS commands.
+     mcgs.reg:
+        description: Permission to use regular MCGS commands (non-op commands).
