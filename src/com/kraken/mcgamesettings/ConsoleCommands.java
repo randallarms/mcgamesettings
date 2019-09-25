@@ -16,6 +16,7 @@ public class ConsoleCommands {
 	  boolean enabled;
 	  boolean whitelist;
 	  boolean opRequired;
+	  boolean permsRequired;
 	  boolean silentDeath;
 	  boolean buildPermReq;
 	  boolean destroyPermReq;
@@ -38,6 +39,7 @@ public class ConsoleCommands {
 	    this.enabled = plugin.enabled;
 	    this.whitelist = plugin.whitelist;
 	    this.opRequired = plugin.opRequired;
+	    this.permsRequired = true; //Add to options soon; for now, permanently required
 	    this.silentDeath = plugin.silentDeath;
 	    this.buildPermReq = plugin.buildPermReq;
 	    this.destroyPermReq = plugin.destroyPermReq;
@@ -47,8 +49,6 @@ public class ConsoleCommands {
 	    this.timeProc = plugin.timeProc;
 	    this.weatherProc = plugin.weatherProc;
 	    this.modeProc = plugin.modeProc;
-	    
-	    
 	
 	}
 	
@@ -62,12 +62,17 @@ public class ConsoleCommands {
           //Command: mcgs < on / off / silentDeath <on/off> / opRequired <on/off> >        
     		case "mcgs":
     			
-    			//Currently requires "mcgs.op" perm to use commands
+    			//Currently requires "mcgs.op" or "mcgs.admin" perm to use commands
     			if (isPlayer) {
-    				if (!player.hasPermission("op")) {
+    				
+    				boolean isOp = player.hasPermission("op");
+    				boolean isAdmin = player.hasPermission("admin");
+    				
+    				if ( this.permsRequired && !(isOp || isAdmin) ) {
     					player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have permission to use this command.");
     					return true;
     				}
+    				
     			}
   	        	  
 	            switch ( args.length ) {
