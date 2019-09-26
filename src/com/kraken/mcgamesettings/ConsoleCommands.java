@@ -39,7 +39,7 @@ public class ConsoleCommands {
 	    this.enabled = plugin.enabled;
 	    this.whitelist = plugin.whitelist;
 	    this.opRequired = plugin.opRequired;
-	    this.permsRequired = true; //Add to options soon; for now, permanently required
+	    this.permsRequired = plugin.permsRequired;
 	    this.silentDeath = plugin.silentDeath;
 	    this.buildPermReq = plugin.buildPermReq;
 	    this.destroyPermReq = plugin.destroyPermReq;
@@ -209,6 +209,55 @@ public class ConsoleCommands {
 	            	    					player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "Try entering \"/mcgs opReq <on/off>\".");
 	        	            			} else {
 	        	            				System.out.println("[MCGS] Try entering \"/mcgs opReq <on/off>\".");
+	        	            			}
+	            	    				
+	            	        	    	return true;
+	            	        	    	
+	            	    		}
+	            	    		
+	            	    //Command: opRequired
+		            	    case "permsrequired":
+		            	    case "permsreq":
+		            	    		
+	            	    		switch ( args[1].toLowerCase() ) {
+	            	    		
+	            	    			case "on":
+	            	    			case "enable":
+	            	    			case "enabled":
+	            	    			case "true":
+	            	    				options.set("permsRequired", true);
+	            	    				permsRequired = true;
+	            	    				plugin.saveOptions();
+	            	    				
+	            	            		if (isPlayer) {
+	            	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "The permissions requirement is now enabled.");
+	        	            			} else {
+	        	            				System.out.println("[MCGS] The permissions requirement is now enabled.");
+	        	            			}
+	            	    				
+	            	    				return true;
+	            	    				
+	            	    			case "off":
+	            	    			case "disable":
+	            	    			case "disabled":
+	            	    			case "false":
+	            	    				options.set("permsRequired", false);
+	            	    				permsRequired = false;
+	            	    				plugin.saveOptions();
+	            	    				
+	            	    				if (isPlayer) {
+	            	            			player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "The permissions requirement is now disabled.");
+	        	            			} else {
+	        	            				System.out.println("[MCGS] The permissions requirement is now disabled.");
+	        	            			}
+	            	    				
+	            	    				return true;
+	            	    				
+	            	    			default:
+	            	    				if (isPlayer) {
+	            	    					player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "Try entering \"/mcgs permsReq <on/off>\".");
+	        	            			} else {
+	        	            				System.out.println("[MCGS] Try entering \"/mcgs permsReq <on/off>\".");
 	        	            			}
 	            	    				
 	            	        	    	return true;

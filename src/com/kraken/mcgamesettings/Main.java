@@ -1,10 +1,10 @@
 // ========================================================================
-// |MCGAMESETTINGS v0.5.2
-// | by Kraken | https://www.spigotmc.org/resources/mcgamesettings.42964/
+// |MCGAMESETTINGS v0.5.3.2
+// | by Kraken | https://www.github.com/randallarms/mcgamesettings
 // | code inspired by various Bukkit & Spigot devs -- thank you. 
 // |
 // | Always free & open-source! If this plugin is being sold or re-branded,
-// | please let me know on the SpigotMC site, or wherever you can. Thanks!
+// | please let me know wherever you can. Thanks!
 // | Source code: https://github.com/randallarms/mcgamesettings
 // ========================================================================
 
@@ -26,7 +26,7 @@ import org.bukkit.Bukkit;
 
 public class Main extends JavaPlugin {
   	
-	public String VERSION = "0.5.2";
+	public String VERSION = "0.5.3.2";
 	
     File optionsFile = new File("plugins/MCGameSettings", "options.yml");
     FileConfiguration options = YamlConfiguration.loadConfiguration(optionsFile);
@@ -37,6 +37,7 @@ public class Main extends JavaPlugin {
     
 	boolean enabled = true;
 	boolean opRequired = false;
+	boolean permsRequired = false;
 	boolean whitelist = false;
 	boolean silentDeath = false;
 	boolean buildPermReq = false;
@@ -57,6 +58,7 @@ public class Main extends JavaPlugin {
 			options.set("loaded", true);
 			options.set("enabled", true);
 			options.set("opRequired", false);
+			options.set("permsRequired", true);
 			options.set("whitelist", false);
 			options.set("silentDeath", false);
 			options.set("buildPermReq", false);
@@ -68,6 +70,7 @@ public class Main extends JavaPlugin {
 
         enabled = options.getBoolean("enabled");
         opRequired = options.getBoolean("opRequired");
+        permsRequired = options.getBoolean("permsRequired");
         silentDeath = options.getBoolean("silentDeath");
         buildPermReq = options.getBoolean("buildPermReq");
         destroyPermReq = options.getBoolean("destroyPermReq");

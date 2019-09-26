@@ -6,7 +6,7 @@ commands:
 
      mcgs:
         description: Info on the MCGameSettings plugin & version number.
-        usage: /<command> <on/off/silentDeath/opReq>
+        usage: /<command> <on/off/silentDeath/opReq/permsReq>
      allowSetting:
         description: Toggle player permission to use the MCGS commands.
         usage: /<command> <player>
