@@ -64,13 +64,15 @@ public class ConsoleCommands {
     			
     			//Currently requires "mcgs.op" or "mcgs.admin" perm to use commands
     			if (isPlayer) {
-    				
+
     				boolean isOp = player.hasPermission("op");
     				boolean isAdmin = player.hasPermission("admin");
     				
-    				if ( this.permsRequired && !(isOp || isAdmin) ) {
-    					player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have permission to use this command.");
-    					return true;
+    				if (this.permsRequired) {
+	    				if (!isOp && !isAdmin) {
+	    					player.sendMessage(ChatColor.GREEN + "[MCGS]" + ChatColor.GRAY + " | " + "You do not have permission to use this command.");
+	    					return true;
+	    				}
     				}
     				
     			}
