@@ -1,6 +1,6 @@
 # MCGameSettings
 
-A simple Minecraft plugin for controlling basic game/world settings at command.
+A simple Minecraft plugin for controlling basic game/world settings at command. This is more for admins & ops than for regular users, but permissions (as defined in the plugin.yml) will allow any user to perform MCGS commands.
 
 commands:
 
